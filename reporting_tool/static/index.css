@@ -153,7 +153,7 @@ table:last-of-type {
   overflow: hidden;
 
   /* Deep, low-glare gradient */
-  background: linear-gradient(135deg, #0d47a1 0%, #1565c0 40%, #1e3a8a 100%);
+  background: linear-gradient(135deg, #01255c 0%, #2f98e8 40%, #1e3a8a 100%);
   background-size: 300% 300%;
   animation: gradientShift 12s ease infinite;
 
