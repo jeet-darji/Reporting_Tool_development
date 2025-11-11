@@ -1,0 +1,12 @@
+Reporting tool service 
+    reporting_tool(rename)
+        allthings
+        helper/ (logic.py)
+        configuration/ (constant.py)[hardcoded values]
+        utilities/ (aws call , database connection)
+        app.py(entry point)
+        
+    gitignore
+    requirements.txt
+    readme.md
+

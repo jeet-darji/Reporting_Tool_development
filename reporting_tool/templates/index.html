@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <title>Reporting Tool</title>
+   <script>
+    function validateDates(event) {
+        const startDateValue = document.querySelector('input[name="start_date"]').value;
+        const endDateValue = document.querySelector('input[name="end_date"]').value;
+        const quickFilterValue = document.getElementById("quick_filter").value;
+
+        // Case 1: Nothing selected at all
+        if ((!quickFilterValue) && (!startDateValue || !endDateValue)) {
+            alert("Please select either a quick filter OR both start and end dates!");
+            event.preventDefault();
+            return;
+        }
+
+        // Case 2: Both dropdown and manual dates selected → not allowed
+        if ((quickFilterValue && startDateValue) || (quickFilterValue&& endDateValue)) {
+            alert("Please select either a quick filter OR manual dates, not both!");
+            event.preventDefault();
+            return;
+        }
+
+        // Case 3: Validate start < end when manual dates are used
+        if (!quickFilterValue && startDateValue && endDateValue) {
+            const startDate = new Date(startDateValue);
+            const endDate = new Date(endDateValue);
+
+            if (startDate > endDate) {
+            alert("Start Date cannot be later than End Date!");
+            event.preventDefault();
+            return;
+            }
+        }
+    }
+
+  </script>
+</head>
+<body>
+    <!-- Reporting Tool card -->
+    <div class="reporting-card" role="region" aria-label="Reporting Tool">
+    <div class="reporting-card-inner">
+        <svg class="reporting-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" d="M3 13h4v7H3zM9 8h4v12H9zM15 3h4v17h-4z"/>
+        </svg>
+
+        <div>
+        <h2 class="reporting-title">Reporting Tool</h2>
+        <p class="reporting-sub">Generate, filter and export analytics quickly</p>
+        </div>
+    </div>
+    </div>
+    <div>
+            <form method="POST" class="date-container" onsubmit="validateDates(event)">
+                <div class="date-input">
+                <label>Start Date</label>
+                <input type="datetime-local" name="start_date" value="{{ start_date }}" >
+                </div>
+                <div class="date-input">
+                <label>End Date</label>
+                <input type="datetime-local" name="end_date" value="{{ end_date }}" >
+                </div>
+                <select id="quick_filter" name="quick_filter">
+                    <option value="">Select Range</option>
+                    <option value="24h">Past 24 Hours</option>
+                    <option value="7d">Past 7 Days</option>
+                </select>
+                <button type="submit" class="apply-btn">Apply</button>
+            </form>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Tenants</th>
+                <!-- <th>Batch ID</th> -->
+                <!-- <th>Batch Name</th> -->
+                <!-- <th>Pipeline</th> -->
+                <th>Interactions Processed</th>
+                <!-- <th>Memory Used In MB</th> -->
+                <th>Input Tokens</th>
+                <th>Output Tokens</th>
+                <th>Total Tokens</th>
+                <th>Retries Info</th>
+                <!-- <th>Status</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in range(data.interaction_processed|length) %}
+            <tr>
+                <td>{{ data.tenant[i] }}</td>
+                
+                <td>{{ data.interaction_processed[i] }}</td>
+                <td>{{ data.inputTokens[i] }}</td>
+                <td>{{ data.outputTokens[i] }}</td>
+                <td>{{ data.totalTokens[i] }}</td>
+                <td>
+                    {% for retry_name,retry_count in data.retries_info[i].items() %}
+                        <div>{{ retry_name }} = {{ retry_count }}</div>
+                    {% endfor %}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

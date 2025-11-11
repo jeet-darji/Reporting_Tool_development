@@ -1,0 +1,247 @@
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    margin: 40px;
+  }
+
+table {
+    width: 90%;
+    border-collapse: collapse;
+    margin: 30px auto;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+th {
+    text-align: center; 
+    vertical-align: middle;
+    background-color: #1976d2;
+    color: white;
+    text-transform: capitalize;
+    padding: 12px 10px;
+    font-size: 16px;
+  }
+
+td {
+    text-align: center; 
+    vertical-align: middle; 
+    padding: 10px 14px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: top;
+    font-size: 15px;
+  }
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+tr:hover {
+    background-color: #eef4ff;
+  }
+
+div {
+    margin-bottom: 4px;
+  }
+
+br {
+    margin-bottom: 30px;
+  }
+
+table:last-of-type {
+    margin-bottom: 60px;
+  }
+.date-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  background: #f9fafc;
+  border: 1px solid #dcdcdc;
+  padding: 20px 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin: 20px auto;
+  width: fit-content;
+}
+
+.date-input {
+  display: flex;
+  flex-direction: column;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.date-input label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.date-input input[type="datetime-local"] {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.date-input input[type="datetime-local"]:focus {
+  border-color: #007bff;
+}
+
+.apply-btn,
+.reset-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.apply-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.apply-btn:hover {
+  background-color: #0056b3;
+}
+
+
+#result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #f9fafc;
+  border: 1px solid #dcdcdc;
+  padding: 20px 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin: 20px auto;
+  width: fit-content;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+#result h3 {
+  color: #007bff;
+  margin-bottom: 8px;
+}
+
+#result p {
+  color: #5370f2;
+  font-size: 20px;
+}
+.reporting-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  margin: 25px auto;
+  width: min(760px, 95%);
+  border-radius: 14px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+
+  /* Deep, low-glare gradient */
+  background: linear-gradient(135deg, #0d47a1 0%, #1565c0 40%, #1e3a8a 100%);
+  background-size: 300% 300%;
+  animation: gradientShift 12s ease infinite;
+
+  color: #f1f5f9;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Inner structure */
+.reporting-card-inner {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+  padding: 14px 22px;
+}
+
+/* Icon styling */
+.reporting-icon {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  color: #90caf9;
+}
+
+/* Heading */
+.reporting-title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #e3f2fd;
+}
+
+/* Sub text */
+.reporting-sub {
+  margin: 4px 0 0 0;
+  font-size: 0.95rem;
+  color: #bbdefb;
+}
+
+/* Gradient animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Mobile tweaks */
+@media (max-width: 480px) {
+  .reporting-card-inner { gap: 12px; padding: 12px 16px; }
+  .reporting-icon { width: 40px; height: 40px; }
+  .reporting-title { font-size: 1.3rem; }
+  .reporting-sub { font-size: 0.9rem; }
+}
+/* Dropdown styling */
+#quick_filter {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 15px;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin: 10px 0 0 10px; /* slight spacing from date inputs */
+}
+
+/* Add subtle hover effect */
+#quick_filter:hover {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* When focused (clicked) */
+#quick_filter:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4);
+}
+
+/* Dropdown arrow style (for WebKit browsers) */
+#quick_filter::-webkit-inner-spin-button,
+#quick_filter::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+/* Optional — make it align nicely with your Apply button */
+.date-container select {
+  margin-left: 10px;
+  vertical-align: middle;
+}
