@@ -98,7 +98,11 @@
                 <td>{{ data.totalTokens[i] }}</td>
                 <td>
                     {% for retry_name,retry_count in data.retries_info[i].items() %}
-                        <div>{{ retry_name }} = {{ retry_count }}</div>
+                        {% if retry_name=='retry_count' %}
+                            <div>Not Applicable</div>
+                        {% else %}
+                            <div>{{ retry_name }} = {{ retry_count }}</div>
+                        {% endif %}
                     {% endfor %}
                 </td>
 
