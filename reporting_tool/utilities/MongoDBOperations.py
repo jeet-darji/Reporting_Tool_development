@@ -8,9 +8,7 @@ logger = Logger().get_logger(__name__)
 
 class DataRetriever:
     def __init__(self,db_instance):
-        """
-        # mongo_db_connection → the DB instance returned from DatabaseConnector.initialize_mongo_db_instances()
-        """
+        
         self.db = db_instance
 
     def retrieve_issue_inquiry_logs(self, collection_name, start_date, end_date):

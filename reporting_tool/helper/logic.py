@@ -10,7 +10,8 @@ from configuration.constants import (
     TOKEN_TOTAL_KEY,
     BATCH_RETRY_DETAILS_KEY,
     RETRY_DETAILS_KEY,
-    DEFAULT_RETRY_INFO
+    DEFAULT_RETRY_INFO,
+    PIPELINE
 )
 
 class LogProcessor:
@@ -18,25 +19,29 @@ class LogProcessor:
         self.logs = logs
         self.logger = logger
         self.tenants = []
+        self.pipeline = []
         self.input_tokens = []
         self.output_tokens = []
         self.total_tokens = []
         self.interaction_counts = []
-        self.retries_info = []
+        self.retries_count = []
 
     def log(self, message):
         if self.logger:
             self.logger.info(message)
-
+    # needs to implement logic here for multiple tenants
     def process_log(self, log):
         try:
             # Add tenant ID from constants
             self.tenants.append(DEFAULT_TENANT_ID)
-
             # Retrieve event context
             event_context = log[EVENT_CONTEXT_KEY][EVENT_CONTEXT_INFO_KEY]
-
-            # Interaction Count
+            
+            if isinstance(event_context[PIPELINE], list):
+                self.pipeline.append(event_context[PIPELINE][0])
+            else :
+                self.pipeline.append(event_context[PIPELINE])
+            # Interaction Count 
             self.interaction_counts.append(event_context[INTERACTION_COUNT_KEY])
 
             # Tokens
@@ -47,18 +52,16 @@ class LogProcessor:
 
             # Retry processing
             batch_retry_details = event_context[BATCH_RETRY_DETAILS_KEY]
-            retry_dict = {}
-
+            # retry_dict = {}
+            retry_count = 0
             for obj in batch_retry_details:
                 retry_info = obj.get(RETRY_DETAILS_KEY)
 
                 if isinstance(retry_info, dict):
-                    for retries in retry_info.values():
-                        for retry_key in retries:
-                            retry_dict[retry_key] = retry_dict.get(retry_key, 0) + 1
-
+                    retry_count += len(retry_info)
+            self.retries_count.append(retry_count)
             # Append retry result
-            self.retries_info.append(retry_dict if retry_dict else DEFAULT_RETRY_INFO)
+            # self.retries_count.append(retry_dict if retry_dict else DEFAULT_RETRY_INFO)
 
         except Exception as e:
             if self.logger:
@@ -67,13 +70,25 @@ class LogProcessor:
     def run(self):
         for log in self.logs:
             self.process_log(log)
-
-        # Final output
-        return {
+        
+        df = pd.DataFrame({
             "tenant": self.tenants,
+            "pipeline" : self.pipeline,
             "interaction_processed": self.interaction_counts,
             "inputTokens": self.input_tokens,
             "outputTokens": self.output_tokens,
             "totalTokens": self.total_tokens,
-            "retries_info": self.retries_info,
-        }
+            "retries_count": self.retries_count,
+        })
+        
+        grouped_df = (df.groupby("pipeline", as_index=False).agg({
+                                                        "interaction_processed": "sum",
+                                                        "inputTokens": "sum",
+                                                        "outputTokens": "sum",
+                                                        "totalTokens": "sum",
+                                                        "retries_count": "sum"}))
+        
+        resultant_dict = grouped_df.to_dict(orient='list')
+        
+        # Final output
+        return resultant_dict

@@ -55,19 +55,27 @@
     </div>
     <div>
             <form method="POST" class="date-container" onsubmit="validateDates(event)">
+
+                    <div class="date-input">
+                        <label>Start Date</label>
+                        <input type="datetime-local" name="start_date" value="{{ start_date }}" >
+                    </div>
+                    <div class="date-input">
+                        <label>End Date</label>
+                        <input type="datetime-local" name="end_date" value="{{ end_date }}" >
+                    </div>
                 <div class="date-input">
-                <label>Start Date</label>
-                <input type="datetime-local" name="start_date" value="{{ start_date }}" >
+                    <label>Custome range</label>
+                    <select id="quick_filter" name="quick_filter">
+                        <option value="">Select Range</option>
+                        <option value="24h">Past 24 Hours</option>
+                        <option value="7d">Past 7 Days</option>
+                    </select>
                 </div>
-                <div class="date-input">
-                <label>End Date</label>
-                <input type="datetime-local" name="end_date" value="{{ end_date }}" >
+                <div>
+                    <label for="tenant_ids">Enter Tenant IDs (comma separated or new lines)</label><br><br>
+                    <textarea name="tenant_ids" id="tenant_ids" placeholder="2101, 2102, 2103"></textarea>
                 </div>
-                <select id="quick_filter" name="quick_filter">
-                    <option value="">Select Range</option>
-                    <option value="24h">Past 24 Hours</option>
-                    <option value="7d">Past 7 Days</option>
-                </select>
                 <button type="submit" class="apply-btn">Apply</button>
             </form>
     </div>
@@ -77,37 +85,53 @@
                 <th>Tenants</th>
                 <!-- <th>Batch ID</th> -->
                 <!-- <th>Batch Name</th> -->
-                <!-- <th>Pipeline</th> -->
+                <th>Pipeline</th>
                 <th>Interactions Processed</th>
                 <!-- <th>Memory Used In MB</th> -->
                 <th>Input Tokens</th>
                 <th>Output Tokens</th>
                 <th>Total Tokens</th>
-                <th>Retries Info</th>
+                <th>Retries_Count</th>
                 <!-- <th>Status</th> -->
             </tr>
         </thead>
         <tbody>
-            {% for i in range(data.interaction_processed|length) %}
-            <tr>
-                <td>{{ data.tenant[i] }}</td>
-                
-                <td>{{ data.interaction_processed[i] }}</td>
-                <td>{{ data.inputTokens[i] }}</td>
-                <td>{{ data.outputTokens[i] }}</td>
-                <td>{{ data.totalTokens[i] }}</td>
-                <td>
-                    {% for retry_name,retry_count in data.retries_info[i].items() %}
-                        {% if retry_name=='retry_count' %}
-                            <div>Not Applicable</div>
-                        {% else %}
-                            <div>{{ retry_name }} = {{ retry_count }}</div>
-                        {% endif %}
+                   
+                    {% for t_id,data in  final_data.items()%}
+                        <tr>
+                            <td>{{t_id}}</td>
+                            <td>
+                                {% for i in range(data.pipeline|length) %}
+                                    <div>{{ data.pipeline[i] }}</div>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for i in range(data.pipeline|length) %}
+                                    <div>{{ data.interaction_processed[i] }}</div>
+                                {% endfor %}    
+                            </td>
+                            <td>
+                                {% for i in range(data.pipeline|length) %}
+                                    <div>{{ data.inputTokens[i] }}</div>
+                                {% endfor %}    
+                            </td>
+                            <td>
+                                {% for i in range(data.pipeline|length) %}
+                                    <div>{{ data.outputTokens[i] }}</div>
+                                {% endfor %}    
+                            </td>
+                            <td>
+                                {% for i in range(data.pipeline|length) %}
+                                    <div>{{ data.totalTokens[i] }}</div>
+                                {% endfor %}    
+                            </td>
+                            <td>
+                                {% for i in range(data.pipeline|length) %}
+                                    <div>{{data.retries_count[i]}}</div>
+                                {% endfor %}
+                            </td>
+                        </tr>
                     {% endfor %}
-                </td>
-
-            </tr>
-            {% endfor %}
         </tbody>
     </table>
 </body>

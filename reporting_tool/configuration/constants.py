@@ -15,7 +15,7 @@ TOKEN_COUNT_KEY = "totalTokenCount"
 TOKEN_INPUT_KEY = "inputTokens"
 TOKEN_OUTPUT_KEY = "outputTokens"
 TOKEN_TOTAL_KEY = "totalTokenCounts"
-
+PIPELINE = "pipeline"
 # Retry keys
 BATCH_RETRY_DETAILS_KEY = "batchRetryDetails"
 RETRY_DETAILS_KEY = "retryDetails"
@@ -25,3 +25,5 @@ DEFAULT_RETRY_INFO = {"retry_count": 0}
 MONGO_CONNECTION_STRING = "mongodb+srv://intEUCluster:EpmB1q2zBXu2Lv14@int-eu-cluster.fekpn.mongodb.net/"
 MAPPING_DATABASE_NAME = "DoMaster"
 COLLECTION_NAME = "ReconciliationLog"
+SECRETS_MANAGER_MONGO_KEY_NAME_FORMAT = """do-ndb-mng-cdm-org{organization_id}-secret"""
+MONGO_CONNECTION_STRING_TENANT_WISE = """mongodb+srv://{user_name}:{password}@{host_name}/"""
